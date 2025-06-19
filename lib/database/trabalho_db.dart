@@ -10,7 +10,6 @@ class TrabalhoDb {
 
   final path = join(await getDatabasesPath(), 'trabalhos.db');
 
-  // ✅ Apaga o banco toda vez que o app iniciar
   await deleteDatabase(path);
 
   _db = await openDatabase(
