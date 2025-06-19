@@ -6,29 +6,33 @@ class TrabalhoDb {
   static Database? _db;
 
   static Future<Database> _getDatabase() async {
-    if (_db != null) return _db!;
-    final path = join(await getDatabasesPath(), 'trabalhos.db');
+  if (_db != null) return _db!;
 
-    _db = await openDatabase(
-      path,
-      version: 1,
-      onCreate: (db, version) {
-        return db.execute('''
-          CREATE TABLE trabalhos (
-            id INTEGER PRIMARY KEY,
-            titulo TEXT,
-            descricao TEXT,
-            dataEntrega TEXT,
-            disciplina TEXT,
-            status INTEGER,
-            alunoId INTEGER
-          )'
-        ''');
-      },
-    );
+  final path = join(await getDatabasesPath(), 'trabalhos.db');
 
-    return _db!;
-  }
+  // ✅ Apaga o banco toda vez que o app iniciar
+  await deleteDatabase(path);
+
+  _db = await openDatabase(
+    path,
+    version: 1,
+    onCreate: (db, version) {
+      return db.execute('''
+        CREATE TABLE trabalhos (
+          id INTEGER PRIMARY KEY,
+          titulo TEXT,
+          descricao TEXT,
+          dataEntrega TEXT,
+          disciplina TEXT,
+          status INTEGER,
+          universitarioId INTEGER
+        )
+      ''');
+    },
+  );
+
+  return _db!;
+}
 
   static Future<void> inserir(TrabalhoAcademico trabalho) async {
     final db = await _getDatabase();
@@ -36,32 +40,17 @@ class TrabalhoDb {
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  static Future<List<TrabalhoAcademico>> listarPorAluno(int alunoId) async {
+  static Future<List<TrabalhoAcademico>> listarPorUniversitario(int universitarioId) async {
     final db = await _getDatabase();
     final maps = await db.query(
       'trabalhos',
-      where: 'alunoId = ?',
-      whereArgs: [alunoId],
+      where: 'universitarioId = ?',
+      whereArgs: [universitarioId],
     );
     return List.generate(
       maps.length,
       (i) => TrabalhoAcademico.fromMap(maps[i]),
     );
-  }
-
-  static Future<void> atualizar(TrabalhoAcademico trabalho) async {
-    final db = await _getDatabase();
-    await db.update(
-      'trabalhos',
-      trabalho.toMap(),
-      where: 'id = ?',
-      whereArgs: [trabalho.id],
-    );
-  }
-
-  static Future<void> deletar(int id) async {
-    final db = await _getDatabase();
-    await db.delete('trabalhos', where: 'id = ?', whereArgs: [id]);
   }
 
   static Future<void> limpar() async {

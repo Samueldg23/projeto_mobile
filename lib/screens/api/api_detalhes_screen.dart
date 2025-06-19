@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import '../model/trabalho.dart';
-import '../service/trabalho_api.dart';
-import 'trabalho_form_screen.dart';
+import '../../model/trabalho.dart';
 
-class TrabalhoDetailScreen extends StatelessWidget {
+class ApiDetalhesScreen extends StatelessWidget {
   final TrabalhoAcademico trabalho;
 
-  const TrabalhoDetailScreen({super.key, required this.trabalho});
+  const ApiDetalhesScreen({super.key, required this.trabalho});
 
-  Future<void> _excluir(BuildContext context) async {
+  Future<void> _simularExclusao(BuildContext context) async {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
@@ -27,15 +25,9 @@ class TrabalhoDetailScreen extends StatelessWidget {
       ),
     );
 
-    if (confirm == true) {
-      final sucesso = await TrabalhoApi.deletar(trabalho.id!);
-      if (sucesso && context.mounted) {
-        Navigator.pop(context, true); 
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Erro ao excluir trabalho')),
-        );
-      }
+    if (confirm == true && context.mounted) {
+      
+      Navigator.pop(context, true); 
     }
   }
 
@@ -50,25 +42,8 @@ class TrabalhoDetailScreen extends StatelessWidget {
         backgroundColor: Colors.green,
         actions: [
           IconButton(
-            icon: const Icon(Icons.edit),
-            onPressed: () async {
-              final atualizado = await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => TrabalhoFormScreen(
-                    alunoId: trabalho.alunoId,
-                    trabalho: trabalho,
-                  ),
-                ),
-              );
-              if (atualizado == true && context.mounted) {
-                Navigator.pop(context, true); 
-              }
-            },
-          ),
-          IconButton(
             icon: const Icon(Icons.delete),
-            onPressed: () => _excluir(context),
+            onPressed: () => _simularExclusao(context),
           ),
         ],
       ),

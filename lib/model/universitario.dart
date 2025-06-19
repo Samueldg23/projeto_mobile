@@ -1,19 +1,18 @@
-class Aluno {
+class Universitario {
   final int? id;
   final String nome;
   final String email;
   final String senha;
 
-  Aluno({
+  Universitario({
     this.id,
     required this.nome,
     required this.email,
     required this.senha,
   });
 
-  // Para API → converte JSON em objeto
-  factory Aluno.fromJson(Map<String, dynamic> json) {
-    return Aluno(
+  factory Universitario.fromJson(Map<String, dynamic> json) {
+    return Universitario(
       id: json['id'],
       nome: json['nome'],
       email: json['email'],
@@ -21,7 +20,6 @@ class Aluno {
     );
   }
 
-  // Para API → converte objeto em JSON
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -31,9 +29,7 @@ class Aluno {
     };
   }
 
-  // Para SQLite → converte objeto em Map
   Map<String, dynamic> toMap() => toJson();
 
-  // Para SQLite → converte Map em objeto
-  factory Aluno.fromMap(Map<String, dynamic> map) => Aluno.fromJson(map);
+  factory Universitario.fromMap(Map<String, dynamic> map) => Universitario.fromJson(map);
 }

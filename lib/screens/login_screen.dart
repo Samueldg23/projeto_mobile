@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../service/aluno_api.dart';
-import 'trabalho_list_screen.dart'; // Tela principal após login
-import 'cadastro_screen.dart'; // Tela de cadastro (iremos criar depois)
+import 'package:trabalhos_academicos/navigation/home_bottom_bar.dart';
+import '../service/universitario_api.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -23,22 +22,22 @@ class _LoginScreenState extends State<LoginScreen> {
       _erro = null;
     });
 
-    final aluno = await AlunoApi.login(
+    final universitario = await UniversitarioApi.login(
       _emailController.text,
       _senhaController.text,
     );
 
     setState(() => _loading = false);
 
-    if (aluno != null) {
+    if (universitario != null) {
       final prefs = await SharedPreferences.getInstance();
-      await prefs.setInt('alunoId', aluno.id!);
-      await prefs.setString('alunoNome', aluno.nome);
-      await prefs.setString('alunoEmail', aluno.email);
+      await prefs.setInt('universitarioId', universitario.id!);
+      await prefs.setString('universitarioNome', universitario.nome);
+      await prefs.setString('universitarioEmail', universitario.email);
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => TrabalhoListScreen(aluno: aluno)),
+        MaterialPageRoute(builder: (_) => HomeBottomNavScreen(universitario: universitario)),
       );
     } else {
       setState(() => _erro = 'Email ou senha inválidos.');
@@ -55,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Image.asset('assets/logo_trabalho.png', width: 150),
+                Image.asset('assets/logo.png', width: 150),
                 const SizedBox(height: 24),
                 const Text(
                   'Gerenciador de Trabalhos UniSales',
@@ -69,7 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 TextField(
                   controller: _emailController,
                   decoration: const InputDecoration(
-                    labelText: 'Email', 
+                    labelText: 'Email',
                     border: OutlineInputBorder(),
                   ),
                 ),
@@ -87,20 +86,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   Text(_erro!, style: const TextStyle(color: Colors.red)),
                 const SizedBox(height: 16),
                 ElevatedButton(
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                  ),
                   onPressed: _loading ? null : _login,
-                  child: _loading
-                      ? const CircularProgressIndicator(color: Colors.white)
-                      : const Text('Entrar', style: TextStyle(color: Colors.white)),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => const CadastroScreen()),
-                    );
-                  },
-                  child: const Text('Não tem conta? Cadastre-se'),
+                  child:
+                      _loading
+                          ? const CircularProgressIndicator(color: Colors.white)
+                          : const Text(
+                            'Entrar',
+                            style: TextStyle(color: Colors.white),
+                          ),
                 ),
               ],
             ),

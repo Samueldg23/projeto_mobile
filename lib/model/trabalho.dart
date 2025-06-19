@@ -2,10 +2,10 @@ class TrabalhoAcademico {
   final int? id;
   final String titulo;
   final String descricao;
-  final String dataEntrega; // formato: "2025-06-10"
+  final String dataEntrega; 
   final String disciplina;
   final bool status;
-  final int alunoId;
+  final int universitarioId;
 
   TrabalhoAcademico({
     this.id,
@@ -14,10 +14,9 @@ class TrabalhoAcademico {
     required this.dataEntrega,
     required this.disciplina,
     required this.status,
-    required this.alunoId,
+    required this.universitarioId,
   });
 
-  // Para API
   factory TrabalhoAcademico.fromJson(Map<String, dynamic> json) {
     return TrabalhoAcademico(
       id: json['id'],
@@ -26,7 +25,7 @@ class TrabalhoAcademico {
       dataEntrega: json['dataEntrega'],
       disciplina: json['disciplina'],
       status: json['status'],
-      alunoId: json['aluno']['id'], // vem como objeto
+      universitarioId: json['universitario']['id'],
     );
   }
 
@@ -41,7 +40,6 @@ class TrabalhoAcademico {
     };
   }
 
-  // Para SQLite
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -50,7 +48,7 @@ class TrabalhoAcademico {
       'dataEntrega': dataEntrega,
       'disciplina': disciplina,
       'status': status ? 1 : 0,
-      'alunoId': alunoId,
+      'universitarioId': universitarioId,
     };
   }
 
@@ -62,7 +60,7 @@ class TrabalhoAcademico {
       dataEntrega: map['dataEntrega'],
       disciplina: map['disciplina'],
       status: map['status'] == 1,
-      alunoId: map['alunoId'],
+      universitarioId: map['universitarioId'],
     );
   }
 }

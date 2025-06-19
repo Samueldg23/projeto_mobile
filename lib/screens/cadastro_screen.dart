@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import '../model/aluno.dart';
-import '../service/aluno_api.dart';
 
 class CadastroScreen extends StatefulWidget {
   const CadastroScreen({super.key});
@@ -16,19 +14,19 @@ class _CadastroScreenState extends State<CadastroScreen> {
   bool _loading = false;
   String? _erro;
 
-  Future<void> _cadastrar() async {
+  /* Future<void> _cadastrar() async {
     setState(() {
       _loading = true;
       _erro = null;
     });
 
-    final novoAluno = Aluno(
+    final novoUniversitario = Universitario(
       nome: _nomeController.text.trim(),
       email: _emailController.text.trim(),
       senha: _senhaController.text,
     );
 
-    final alunoCriado = await AlunoApi.cadastrar(novoAluno);
+    final alunoCriado = await UniversitarioApi.cadastrar(novoUniversitario);
 
     setState(() => _loading = false);
 
@@ -52,7 +50,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
     } else {
       setState(() => _erro = 'Falha no cadastro. Verifique os dados.');
     }
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +62,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Image.asset('assets/logo_trabalho.png', width: 150),
+                Image.asset('assets/logo.png', width: 150),
                 const SizedBox(height: 24),
                 const Text(
                   'Cadastro de Aluno',
@@ -104,11 +102,26 @@ class _CadastroScreenState extends State<CadastroScreen> {
                   Text(_erro!, style: const TextStyle(color: Colors.red)),
                 const SizedBox(height: 16),
                 ElevatedButton(
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                  onPressed: _loading ? null : _cadastrar,
-                  child: _loading
-                      ? const CircularProgressIndicator(color: Colors.white)
-                      : const Text('Cadastrar'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                  ),
+                  onPressed:
+                      _loading
+                          ? null
+                          : () {
+                            // TODO: Implement _cadastrar when ready
+                          },
+                  child:
+                      _loading
+                          ? const SizedBox(
+                            width: 24,
+                            height: 24,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 2,
+                            ),
+                          )
+                          : const Text('Cadastrar'),
                 ),
                 TextButton(
                   onPressed: () => Navigator.pop(context),
