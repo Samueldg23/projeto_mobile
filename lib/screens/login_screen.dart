@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trabalhos_academicos/navigation/home_bottom_bar.dart';
+import 'package:trabalhos_academicos/screens/cadastro_screen.dart';
 import '../service/universitario_api.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -34,6 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
       await prefs.setInt('universitarioId', universitario.id!);
       await prefs.setString('universitarioNome', universitario.nome);
       await prefs.setString('universitarioEmail', universitario.email);
+      await prefs.setString('universitarioSenha', _senhaController.text);
 
       Navigator.pushReplacement(
         context,
@@ -97,6 +99,16 @@ class _LoginScreenState extends State<LoginScreen> {
                             'Entrar',
                             style: TextStyle(color: Colors.white),
                           ),
+                ),
+                const SizedBox(height: 16),
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const CadastroScreen()),
+                    );
+                  },
+                  child: const Text('Criar conta', style: TextStyle(color: Colors.white)),
                 ),
               ],
             ),
