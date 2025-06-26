@@ -26,4 +26,38 @@ class TrabalhoApi {
       return null;
     }
   }
+  static Future<TrabalhoAcademico> cadastrar(TrabalhoAcademico trabalho) async {
+    final url = Uri.parse('$_baseUrl/cadastrar');
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(trabalho.toJson()),
+    );
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return TrabalhoAcademico.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Falha ao cadastrar trabalho');
+    }
+  }
+  static Future<void> atualizar(TrabalhoAcademico trabalho) async {
+    final url = Uri.parse('$_baseUrl/${trabalho.id}');
+    final response = await http.put(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(trabalho.toJson()),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Falha ao atualizar trabalho');
+    }
+  }
+  static Future<void> excluir(int id) async {
+    final url = Uri.parse('$_baseUrl/$id');
+    final response = await http.delete(url);
+
+    if (response.statusCode != 204) {
+      throw Exception('Falha ao excluir trabalho');
+    }
+  }
 }

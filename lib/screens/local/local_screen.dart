@@ -58,17 +58,17 @@ class _LocalScreenState extends State<LocalScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-  title: Text('Offline: $_nomeUsuario'),
-  backgroundColor: Colors.green.shade700,
-  actions: [
-    IconButton(
-      icon: const Icon(Icons.sync),
-      tooltip: 'Sincronizar com API',
-      onPressed: _sincronizarComApi,
-    ),
-    IconButton(
-      icon: const Icon(Icons.delete),
-      tooltip: 'Limpar dados locais',
+        title: Text('Offline: $_nomeUsuario', style: const TextStyle(color: Colors.white)),
+        backgroundColor: Colors.green.shade700,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.sync, color: Colors.white),
+            tooltip: 'Sincronizar com API',
+            onPressed: _sincronizarComApi,
+          ),
+          IconButton(
+            icon: const Icon(Icons.delete, color: Colors.white),
+            tooltip: 'Limpar dados locais',
       onPressed: () async {
         final confirm = await showDialog<bool>(
           context: context,

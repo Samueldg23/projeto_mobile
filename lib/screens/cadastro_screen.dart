@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:trabalhos_academicos/model/universitario.dart';
+import 'package:trabalhos_academicos/service/universitario_api.dart';
 
 class CadastroScreen extends StatefulWidget {
   const CadastroScreen({super.key});
@@ -14,43 +16,51 @@ class _CadastroScreenState extends State<CadastroScreen> {
   bool _loading = false;
   String? _erro;
 
-  /* Future<void> _cadastrar() async {
+  Future<void> _cadastrar() async {
     setState(() {
       _loading = true;
       _erro = null;
     });
 
-    final novoUniversitario = Universitario(
-      nome: _nomeController.text.trim(),
-      email: _emailController.text.trim(),
-      senha: _senhaController.text,
-    );
-
-    final alunoCriado = await UniversitarioApi.cadastrar(novoUniversitario);
-
-    setState(() => _loading = false);
-
-    if (alunoCriado != null) {
-      showDialog(
-        context: context,
-        builder: (_) => AlertDialog(
-          title: const Text('Sucesso'),
-          content: const Text('Cadastro realizado com sucesso!'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context); // fecha dialog
-                Navigator.pop(context); // volta ao login
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        ),
+    try {
+      final novoUniversitario = Universitario(
+        nome: _nomeController.text.trim(),
+        email: _emailController.text.trim(),
+        senha: _senhaController.text,
       );
-    } else {
-      setState(() => _erro = 'Falha no cadastro. Verifique os dados.');
+
+      final alunoCriado = await UniversitarioApi.cadastrar(novoUniversitario);
+
+      setState(() => _loading = false);
+
+      if (alunoCriado != null) {
+        showDialog(
+          context: context,
+          builder:
+              (_) => AlertDialog(
+                title: const Text('Sucesso'),
+                content: const Text('Cadastro realizado com sucesso!'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    },
+                    child: const Text('OK'),
+                  ),
+                ],
+              ),
+        );
+      } else {
+        setState(() => _erro = 'Falha no cadastro. Verifique os dados.');
+      }
+    } catch (e) {
+      setState(() {
+        _loading = false;
+        _erro = 'Erro ao conectar com o servidor.';
+      });
     }
-  }*/
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +119,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
                       _loading
                           ? null
                           : () {
-                            // TODO: Implement _cadastrar when ready
+                            _cadastrar();
                           },
                   child:
                       _loading

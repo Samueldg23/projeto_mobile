@@ -12,6 +12,8 @@ class UniversitarioDb {
     if (_db != null) return _db!;
     final path = join(await getDatabasesPath(), 'universitarios.db');
 
+    await deleteDatabase(path);
+    
     _db = await openDatabase(
       path,
       version: 1,
@@ -30,13 +32,26 @@ class UniversitarioDb {
     return _db!;
   }
 
+  static Future<void> resetarBanco() async {
+    final path = join(await getDatabasesPath(), 'universitarios.db');
+    await deleteDatabase(path);
+    _db = null;
+  }
+
   static Future<void> inserir(Universitario universitario) async {
     if (kIsWeb) {
       final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('universitario', jsonEncode(universitario.toJson()));
+      await prefs.setString(
+        'universitario',
+        jsonEncode(universitario.toJson()),
+      );
     } else {
       final db = await _getDatabase();
-      await db.insert('universitarios', universitario.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
+      await db.insert(
+        'universitarios',
+        universitario.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
     }
   }
 

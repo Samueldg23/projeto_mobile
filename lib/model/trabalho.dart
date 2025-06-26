@@ -30,15 +30,17 @@ class TrabalhoAcademico {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'titulo': titulo,
-      'descricao': descricao,
-      'dataEntrega': dataEntrega,
-      'disciplina': disciplina,
-      'status': status,
-    };
-  }
+  return {
+    'id': id,
+    'titulo': titulo,
+    'descricao': descricao,
+    'dataEntrega': dataEntrega,
+    'disciplina': disciplina,
+    'status': status,
+    'universitario': {'id': universitarioId},
+  };
+}
+
 
   Map<String, dynamic> toMap() {
     return {

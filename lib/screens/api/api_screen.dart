@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:trabalhos_academicos/screens/api/api_novo_screeen.dart';
 import '../../model/universitario.dart';
 import '../../model/trabalho.dart';
 import '../../service/trabalho_api.dart';
 import '../../database/trabalho_db.dart';
+import '../../database/universitario_db.dart';
 import 'api_detalhes_screen.dart';
 
 class ApiScreen extends StatefulWidget {
@@ -25,24 +27,34 @@ class _ApiScreenState extends State<ApiScreen> {
   }
 
   Future<void> _carregarTrabalhos() async {
-  setState(() => _carregando = true);
+    setState(() => _carregando = true);
 
-  final trabalhosApi = await TrabalhoApi.buscarPorUniversitario(widget.universitario.id!);
+    final trabalhosApi = await TrabalhoApi.buscarPorUniversitario(
+      widget.universitario.id!,
+    );
 
-  if (!mounted) return;
+    if (!mounted) return;
 
-  _trabalhos = trabalhosApi;
+    _trabalhos = trabalhosApi;
 
-  await TrabalhoDb.limpar();
-  for (final t in _trabalhos) {
-    await TrabalhoDb.inserir(t);
+    await TrabalhoDb.limpar();
+    for (final t in _trabalhos) {
+      await TrabalhoDb.inserir(t);
+    }
+
+    if (!mounted) return;
+
+    setState(() => _carregando = false);
   }
 
-  if (!mounted) return;
+  Future<void> _logout() async {
+    await UniversitarioDb.limpar();
+    await TrabalhoDb.limpar();
 
-  setState(() => _carregando = false);
-}
+    if (!mounted) return;
 
+    Navigator.of(context).popUntil((route) => route.isFirst);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +66,7 @@ class _ApiScreenState extends State<ApiScreen> {
           children: [
             Text(
               widget.universitario.nome,
-              style: const TextStyle(fontSize: 18),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
             ),
             Text(
               widget.universitario.email,
@@ -62,6 +74,13 @@ class _ApiScreenState extends State<ApiScreen> {
             ),
           ],
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout, color: Colors.white),
+            onPressed: _logout,
+            tooltip: 'Sair',
+          ),
+        ],
       ),
       body:
           _carregando
@@ -109,6 +128,23 @@ class _ApiScreenState extends State<ApiScreen> {
                   );
                 },
               ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.green,
+        onPressed: () async {
+          final criado = await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder:
+                  (_) => NovoTrabalhoScreen(
+                    universitarioId: widget.universitario.id!,
+                  ),
+            ),
+          );
+          if (criado == true) _carregarTrabalhos();
+        },
+        child: const Icon(Icons.add, color: Colors.white),
+        tooltip: 'Novo trabalho',
+      ),
     );
   }
 }
