@@ -11,7 +11,7 @@ class LocalScreen extends StatefulWidget {
   @override
   State<LocalScreen> createState() => _LocalScreenState();
 }
-
+//tela que trabalha apenas com dados locais
 class _LocalScreenState extends State<LocalScreen> {
   List<TrabalhoAcademico> _trabalhos = [];
   String _nomeUsuario = '';

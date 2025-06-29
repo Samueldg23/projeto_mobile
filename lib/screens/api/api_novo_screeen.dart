@@ -10,7 +10,7 @@ class NovoTrabalhoScreen extends StatefulWidget {
   @override
   State<NovoTrabalhoScreen> createState() => _NovoTrabalhoScreenState();
 }
-
+//tela de cadastro de novos trabalhos
 class _NovoTrabalhoScreenState extends State<NovoTrabalhoScreen> {
   final _formKey = GlobalKey<FormState>();
   final _tituloController = TextEditingController();

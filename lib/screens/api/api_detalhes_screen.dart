@@ -10,7 +10,7 @@ class ApiDetalhesScreen extends StatefulWidget {
   @override
   State<ApiDetalhesScreen> createState() => _ApiDetalhesScreenState();
 }
-
+//tela de edição e delete de trablhos vindos da api
 class _ApiDetalhesScreenState extends State<ApiDetalhesScreen> {
   late TextEditingController _tituloController;
   late TextEditingController _descricaoController;
@@ -58,7 +58,7 @@ class _ApiDetalhesScreenState extends State<ApiDetalhesScreen> {
       }
     }
   }
-
+//funções que trabalham com valores futuros por causa do await e async
   Future<void> _excluirTrabalho() async {
     final confirmar = await showDialog<bool>(
       context: context,

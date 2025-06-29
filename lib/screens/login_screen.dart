@@ -16,7 +16,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _senhaController = TextEditingController();
   bool _loading = false;
   String? _erro;
-
+//função que faz o login alterando os estados para interface
+//o future é necessario pois a função gira em torno de um await e uma busca de dados 
   Future<void> _login() async {
     setState(() {
       _loading = true;
